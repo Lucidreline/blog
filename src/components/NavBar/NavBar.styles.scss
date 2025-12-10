@@ -1,3 +1,5 @@
+@use '../../vars';
+
 .nav-bar {
     width: 75%;
     margin: 1rem auto 3rem auto;
@@ -15,7 +17,7 @@
             align-items: center;
 
             &.middle a {
-                color: rgb(17, 169, 215);
+                color: vars.$MainAccentColor;
                 font-size: 1.8rem;
                 font-weight: 700;
             }
