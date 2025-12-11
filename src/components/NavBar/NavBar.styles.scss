@@ -3,23 +3,34 @@
 .nav-bar {
     width: 75%;
     margin: 1rem auto 3rem auto;
+    position: relative;
+    z-index: 100;
 
     .nav-sections {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
 
         .nav-section {
             min-height: 3rem;
-            width: 14rem;
+            // width: 14rem;
             display: flex;
             justify-content: space-around;
             align-items: center;
 
-            &.middle a {
-                color: vars.$MainAccentColor;
-                font-size: 1.8rem;
-                font-weight: 700;
+            &.middle {
+                // this keeps the domain centered on desktop but gets
+                // overwritten on the media query
+                justify-content: center;
+
+                a {
+                    color: vars.$MainAccentColor;
+                    font-size: 1.8rem;
+                    font-weight: 700;
+
+
+                }
             }
 
             a {
@@ -30,9 +41,118 @@
                 font-size: 1.1rem;
 
                 &:hover {
-                    color: rgb(17, 169, 215);
+                    color: vars.$MainAccentColor;
                     transition: ease-in-out 0.225s;
                     transform: scale(1.05);
+                }
+            }
+        }
+    }
+
+    // Hides the mobile html while we are on desktop
+    .mobile-hamburger,
+    .mobile-menu,
+    .backdrop {
+        display: none;
+    }
+}
+
+@media (max-width: 920px) {
+    .nav-bar {
+        width: 90%; // Give it a bit more room on mobile
+
+        .nav-sections {
+
+            // Hide the side links that usually appear on desktop
+            .nav-section.desktop-only {
+                display: none;
+            }
+
+            // Push the logo to the far left
+            .nav-section.middle {
+                justify-content: flex-start;
+                flex: 0 0 auto; // Don't let it stretch, just take size needed
+            }
+        }
+
+        // --- 1. The Hamburger Icon ---
+        .mobile-hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 200;
+
+            .line {
+                width: 100%;
+                height: 3px;
+                background-color: white;
+                border-radius: 10px;
+                transition: all 0.3s ease-in-out;
+
+                /* CHANGE 1: Rotate around the center, not the edge */
+                transform-origin: center;
+
+                &.open {
+
+                    /* CHANGE 2: Move the top line DOWN to the middle, then rotate */
+                    &:first-child {
+                        transform: translateY(9px) rotate(45deg);
+                    }
+
+                    /* Hide the middle line */
+                    &:nth-child(2) {
+                        opacity: 0;
+                    }
+
+                    /* CHANGE 3: Move the bottom line UP to the middle, then rotate */
+                    &:nth-child(3) {
+                        transform: translateY(-9px) rotate(-45deg);
+                    }
+                }
+            }
+        }
+
+        // --- 2. The Slide-out Drawer ---
+        .mobile-menu {
+            display: block;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 70%;
+            height: 100vh;
+            background-color: vars.$MainAccentColor;
+            z-index: 150;
+            padding-top: 6rem; // Space for the X button at top
+            box-shadow: -2px 0 5px rgba(0, 0, 15, 0.5);
+
+            // The Slide Animation
+            transform: translateX(100%); // Start hidden (off-screen right)
+            transition: transform 0.3s ease-in-out;
+
+            &.open {
+                transform: translateX(0%); // make it smooth as hell
+            }
+
+            .mobile-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+
+                a {
+                    font-size: 1.5rem;
+                    color: white;
+                    text-decoration: none;
+                    font-weight: 500;
+
+                    &:hover {
+                        color: rgb(24, 24, 24);
+                        transition: ease-in-out 0.225s;
+                        transform: scale(1.05);
+                    }
                 }
             }
         }
